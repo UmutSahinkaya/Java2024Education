@@ -1,6 +1,10 @@
 package com.JavaWithReact.Northwind.business.concretes;
 
 import com.JavaWithReact.Northwind.business.abstracts.ProductService;
+import com.JavaWithReact.Northwind.core.utilities.results.DataResult;
+import com.JavaWithReact.Northwind.core.utilities.results.Result;
+import com.JavaWithReact.Northwind.core.utilities.results.SuccessDataResult;
+import com.JavaWithReact.Northwind.core.utilities.results.SuccessResult;
 import com.JavaWithReact.Northwind.dataAccess.abstracts.ProductDao;
 import com.JavaWithReact.Northwind.entities.Product;
 import lombok.AllArgsConstructor;
@@ -13,7 +17,14 @@ import java.util.List;
 public class ProductManager implements ProductService {
     private ProductDao _repository;
     @Override
-    public List<Product> getAll() {
-        return _repository.findAll();
+    public DataResult<List<Product>> getAll() {
+        return new SuccessDataResult<List<Product>>
+                (this._repository.findAll(),"Data listelendi.");
+    }
+
+    @Override
+    public Result add(Product product) {
+        this._repository.save(product);
+        return new SuccessResult("Ürün eklendi.");
     }
 }
